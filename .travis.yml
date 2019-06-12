@@ -8,6 +8,7 @@ cache:
 install: npm ci
 script: npm run build
 
+before_deploy: npm install --prefix ./functions
 deploy:
   provider: firebase
   token:
