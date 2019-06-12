@@ -13,7 +13,7 @@ exports.trackPetition = functions.https.onRequest((request, response) => {
                 return response.json()
             } else throw new Error("Bad response")
         })
-        .then(json => {
+        .then(json =>
             db.collection('petitions').doc(request.query.id).set({
                 title: json.data.attributes.action,
                 summary: json.data.attributes.background,
@@ -21,8 +21,8 @@ exports.trackPetition = functions.https.onRequest((request, response) => {
                 author: json.data.attributes.creator_name || "Anonymous",
                 created: new Date(json.data.attributes.created_at),
                 state: json.data.attributes.state,
-                debated: json.data.attributes.debate != null,
-                responded: json.data.attributes.government_response != null
-            }).catch(reason => console.log(reason));
-        });
+                debated: json.data.attributes.debate !== null,
+                responded: json.data.attributes.government_response !== null
+            }).catch(reason => console.log(reason))
+        ).catch(reason => console.log(reason));
 });
