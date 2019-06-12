@@ -7,7 +7,7 @@ const app = admin.initializeApp(functions.config().firebase);
 let db = admin.firestore();
 
 exports.trackPetition = functions.https.onRequest((request, response) => {
-    let responseCode = 200;
+    let responseCode = 500;
 
     fetch(`https://petition.parliament.uk/petitions/${request.query.id}.json`)
         .then(response => {
@@ -30,7 +30,7 @@ exports.trackPetition = functions.https.onRequest((request, response) => {
                 console.log(reason);
                 responseCode = 500;
             })
-        ).catch(reason => console.log(reason));
-
-    response.status(responseCode).end();
+        )
+        .catch(reason => console.log(reason))
+        .finally(() => response.status(responseCode).end());
 });
