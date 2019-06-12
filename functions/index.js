@@ -9,7 +9,7 @@ let db = admin.firestore();
 exports.trackPetition = functions.https.onRequest((request, response) => {
     let responseCode = 500;
 
-    fetch(`https://petition.parliament.uk/petitions/${request.query.id}.json`)
+    return fetch(`https://petition.parliament.uk/petitions/${request.query.id}.json`)
         .then(response => {
             responseCode = response.status;
             if(response.status === 200) {
