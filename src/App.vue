@@ -5,15 +5,8 @@
 </template>
 
 <script>
-    import PetitionCards from "@/pages/PetitionCards";
-    import NotFound from "@/pages/NotFound";
-
     export default {
-        name: 'app',
-        components: {
-            PetitionCards,
-            NotFound
-        }
+        name: 'app'
     }
 </script>
 

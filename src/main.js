@@ -26,6 +26,7 @@ import NotFound from "@/pages/NotFound";
 Vue.config.productionTip = false;
 
 const router = new VueRouter({
+    mode: 'history',
     routes: [
         {
             path: '/:id',
