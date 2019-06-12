@@ -14,7 +14,7 @@ exports.trackPetition = functions.https.onRequest((request, response) => {
             responseCode = response.status;
             if(response.status === 200) {
                 return response.json();
-            } else throw new Error("Bad response");
+            } else throw new Error(`Received ${response.status} for petition #${request.query.id}`);
         })
         .then(json =>
             db.collection('petitions').doc(request.query.id).set({
