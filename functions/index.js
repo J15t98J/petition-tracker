@@ -7,11 +7,14 @@ const app = admin.initializeApp(functions.config().firebase);
 let db = admin.firestore();
 
 exports.trackPetition = functions.https.onRequest((request, response) => {
+    let responseCode = 200;
+
     fetch(`https://petition.parliament.uk/petitions/${request.query.id}.json`)
         .then(response => {
+            responseCode = response.status;
             if(response.status === 200) {
-                return response.json()
-            } else throw new Error("Bad response")
+                return response.json();
+            } else throw new Error("Bad response");
         })
         .then(json =>
             db.collection('petitions').doc(request.query.id).set({
@@ -23,6 +26,11 @@ exports.trackPetition = functions.https.onRequest((request, response) => {
                 state: json.data.attributes.state,
                 debated: json.data.attributes.debate !== null,
                 responded: json.data.attributes.government_response !== null
-            }).catch(reason => console.log(reason))
+            }).catch(reason => {
+                console.log(reason);
+                responseCode = 500;
+            })
         ).catch(reason => console.log(reason));
+
+    response.status(responseCode).end();
 });
