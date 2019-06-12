@@ -5,10 +5,13 @@ node_js:
 cache:
   directories:
   - "$HOME/.npm"
-install: npm ci
-script: npm run build
+install:
+  - npm ci
+  - npm --prefix ./functions install
+script:
+  - npm run build
+  - npm --prefix ./functions run lint
 
-before_deploy: npm install --prefix ./functions
 deploy:
   provider: firebase
   token:
