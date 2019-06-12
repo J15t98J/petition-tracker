@@ -32,5 +32,8 @@ exports.trackPetition = functions.https.onRequest((request, response) => {
             })
         )
         .catch(reason => console.log(reason))
-        .finally(() => response.status(responseCode).end());
+        .finally(() => {
+            response.status(responseCode).end();
+            return true;
+        });
 });
