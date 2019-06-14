@@ -4,7 +4,10 @@
     "indexes": "firestore.indexes.json"
   },
   "functions": {
-    "predeploy": [ ]
+    "predeploy": [ ],
+    "engines": {
+      "node": "10"
+    }
   },
   "hosting": {
     "public": "dist",

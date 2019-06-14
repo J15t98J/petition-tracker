@@ -37,3 +37,17 @@ exports.trackPetition = functions.https.onRequest((request, response) => {
             return true;
         });
 });
+
+exports.snapshotPetitions = functions.pubsub.schedule('every 5 minutes synchronised').onRun((context) => {
+        db.collection('petitions').where("state", "==", "open").get()
+          .then(docs => docs.forEach(petition => {
+            fetch(`https://petition.parliament.uk/petitions/${petition.id}.json`)
+                .then(response => response.json())
+                .then(json => {
+                    petition.collection('snapshots').doc(new Date().getTime().toString()).set({
+                        signatures: json.data.attributes.signature_count
+                    }).catch(reason => console.log(reason));
+                }).catch(reason => console.log(reason));
+        })).catch(reason => console.log(reason));
+        return true;
+});
