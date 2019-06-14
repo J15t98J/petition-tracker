@@ -17,7 +17,8 @@
     "jquery": "^3.4.1",
     "popper.js": "^1.15.0",
     "bootstrap": "^4.3.1",
-    "highcharts": "^7.1.2"
+    "highcharts": "^7.1.2",
+    "vuefire": "^2.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",

@@ -4,6 +4,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+import {firestorePlugin} from 'vuefire'
+Vue.use(firestorePlugin);
+
 // Other libraries
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -20,6 +23,7 @@ Vue.prototype.$prettydate = prettydate;
 // Pages
 import App from '@/App.vue';
 import PetitionCards from '@/pages/PetitionCards.vue';
+import PetitionDetails from "@/pages/PetitionDetails";
 import NotFound from "@/pages/NotFound";
 
 
@@ -29,12 +33,17 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         {
-            path: '/:id',
-            component: NotFound
+            path: '/:id(\\d+)',
+            component: PetitionDetails,
+            props: true
         },
         {
             path: '/',
             component: PetitionCards
+        },
+        {
+            path: '*',
+            component: NotFound
         }
     ]
 });
