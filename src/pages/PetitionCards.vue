@@ -4,9 +4,8 @@
             <a class="navbar-brand" href="./index.html"><i class="material-icons" style="font-size: 2rem; vertical-align: top">trending_up</i> Petition Tracker</a>
 
             <form class="form-inline" id="search-box" action="javascript:$('#search-box input').blur()" style="flex-grow: 1; justify-content: flex-end">
-                <input class="form-inline form-control" style="max-width: 200px" type="search" placeholder="Search" aria-label="Search" v-model="query"
-                       onfocus="if($(this).outerWidth() < 200) {$('.navbar-brand').hide(); $(this).css({'max-width': ''})}"
-                       onblur="$('.navbar-brand').show(); $(this).css({'max-width': '200px'})" />
+                <input class="form-inline form-control" style="max-width: 200px" type="search" placeholder="Search"
+                       aria-label="Search" v-model="query" @focus="expandSearchBox" @blur="collapseSearchBox" />
             </form>
         </nav>
 
@@ -37,7 +36,7 @@
 
                 <div class="card-footer text-muted" style="display: flex; flex-flow: row nowrap; justify-content: space-between; align-items: center">
                     <span>
-                        <span style="margin-right: .7em; white-space: pre"><i class="material-icons">schedule</i>{{$prettydate.format(new Date(Date.parse(petition.attributes.created_at)))}}</span>
+                        <span style="margin-right: .7em; white-space: pre"><i class="material-icons">schedule</i>{{pretty(new Date(Date.parse(petition.attributes.created_at)))}}</span>
                         <span style="white-space: pre"><i class="material-icons">how_to_vote</i>{{new Intl.NumberFormat().format(petition.attributes.signature_count)}}</span>
                     </span>
                     <a class="float-right" v-bind:href="'https://petition.parliament.uk/petitions/' + petition.id" target="_blank" rel="noopener"><i class="material-icons">open_in_new</i></a>
@@ -48,6 +47,10 @@
 </template>
 
 <script>
+    import $ from 'jquery';
+    import {format as pretty} from 'pretty-date';
+    import _ from 'lodash';
+
     export default {
         name: "PetitionCards",
         watch: {
@@ -62,7 +65,7 @@
             }
         },
         created() {
-            this.slowUpdate = this.$_.debounce(this.updatePetitions, 500);
+            this.slowUpdate = _.debounce(this.updatePetitions, 500);
             this.updatePetitions();
         },
         methods: {
@@ -72,7 +75,18 @@
                     .then(json => {
                         this.petitions = json.data
                     })
-            }
+            },
+            expandSearchBox() {
+                if($('#search-box').outerWidth() < 200) {
+                    $('.navbar-brand').hide();
+                    $('#search-box input').css({'max-width': ''})
+                }
+            },
+            collapseSearchBox() {
+                $('.navbar-brand').show();
+                $('#search-box input').css({'max-width': '200px'})
+            },
+            pretty
         }
     }
 </script>
