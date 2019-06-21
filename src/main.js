@@ -4,18 +4,13 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
-// Other libraries
+// Bootstrap
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+// Firebase
 import * as firebase from 'firebase/app';
 Vue.prototype.$firebase = firebase;
-
-import _ from 'lodash';
-Vue.prototype.$_ = _;
-
-import * as prettydate from 'pretty-date';
-Vue.prototype.$prettydate = prettydate;
 
 // Pages
 import App from '@/App.vue';
