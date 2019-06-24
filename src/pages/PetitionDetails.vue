@@ -28,10 +28,10 @@
         </div>
 
         <div id="footer" class="d-inline-flex flex-row align-items-center fixed-bottom display-4 m-4">
-            <i class="material-icons mr-2" style="font-size: 62px">sync_disabled</i>
+            <i class="material-icons mr-3" style="font-size: 62px">sync_disabled</i>
             <div>
-                <div style="font-size: 2rem"> No need to refresh</div>
-                <div class="text-muted" style="font-size: 1.3rem">The page updates automatically every five minutes</div>
+                <div style="font-size: 2rem"> No need to refresh...</div>
+                <div class="text-muted" style="font-size: 1.3rem">The page updates automatically as new data becomes available</div>
             </div>
             <i v-if="congested" class="material-icons ml-auto" style="font-size: 62px; color: #FB8C00" data-toggle="tooltip" data-placement="left" title="High traffic volumes on the parliament website are making it difficult to fetch data">warning</i>
         </div>
@@ -128,7 +128,10 @@
                     series: [
                         {
                             name: 'Signatures',
-                            color: '#008800'
+                            color: '#008800',
+                            marker: {
+                                enabled: false
+                            }
                         },
                         {
                             visible: false,
@@ -152,7 +155,7 @@
                             marker: {
                               enabled: false
                             },
-                            data: [0, 241, 460, 684, 841, 1006, 1140, 1260, 1361, 1440, 1500, 1540, 1560, 1540, 1500, 1440, 1361, 1260, 1140, 1006, 841, 684, 460, 241, 0]
+                            data: [0, 241, 460, 684, 841, 1006, 1140, 1260, 1361, 1440, 1500, 1540, 1560, 1560, 1540, 1500, 1440, 1361, 1260, 1140, 1006, 841, 684, 460, 241, 0]
                         }
                     ]
                 });
