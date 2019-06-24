@@ -10,7 +10,7 @@
 
             <h4>
                 <span class="badge badge-warning" v-if="petition.signatures >= 10000 && !petition.debated">Awaiting debate</span>
-                <span class="badge badge-primary" v-if="petition.debated != null">Debated</span>
+                <span class="badge badge-primary" v-if="petition.debated">Debated</span>
                 <span class="badge badge-warning" v-if="petition.signatures >= 100000 && !petition.responded">Awaiting response</span>
                 <span class="badge badge-info"    v-if="petition.responded">Responded</span>
             </h4>
