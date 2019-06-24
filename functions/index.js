@@ -6,7 +6,7 @@ const fetch = require('cross-fetch');
 const app = admin.initializeApp(functions.config().firebase);
 let db = admin.firestore();
 
-exports.trackPetition = functions.https.onRequest((request, response) => {
+exports.trackPetition = functions.region('europe-west1').https.onRequest((request, response) => {
     let responseCode = 500;
 
     return fetch(`https://petition.parliament.uk/petitions/${request.query.id}.json`)
@@ -24,6 +24,7 @@ exports.trackPetition = functions.https.onRequest((request, response) => {
                 author: json.data.attributes.creator_name || "Anonymous",
                 created: new Date(json.data.attributes.created_at),
                 state: json.data.attributes.state,
+                signatures: json.data.attributes.signature_count,
                 debated: json.data.attributes.debate !== null,
                 responded: json.data.attributes.government_response !== null
             }).catch(reason => {
@@ -38,15 +39,15 @@ exports.trackPetition = functions.https.onRequest((request, response) => {
         });
 });
 
-exports.snapshotPetitions = functions.pubsub.schedule('every 5 minutes synchronised').onRun((context) => {
-    db.collection('petitions').where("state", "==", "open").get()
+exports.snapshotPetitions = functions.region('europe-west1').pubsub.schedule('every 5 minutes synchronized').onRun((context) => {
+    return db.collection('petitions').where("state", "==", "open").get()
         .then(docs => docs.forEach(petition =>
             fetch(`https://petition.parliament.uk/petitions/${petition.id}.json`)
                 .then(response => response.json())
                 .then(json => Promise.all([
                     petition.ref.update({signatures: json.data.attributes.signature_count}),
-                    petition.collection('snapshots').doc().set({
-                        x: new Date().getTime().toString(),
+                    petition.ref.collection('snapshots').doc().set({
+                        x: new Date().getTime(),
                         y: json.data.attributes.signature_count
                     })
                 ]))
