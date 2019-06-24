@@ -18,7 +18,7 @@
             <div class="row p-5" style="flex-grow: 1">
                 <div class="col-3">
                     <div id="meter" class="rounded" style="display: flex; flex-flow: column nowrap; justify-content: flex-end; width: 20%; height: 300px; background-color: #004800">
-                        <div id="label" class="bg-dark text-light rounded px-2 ml-2" role="tooltip"><div class="bg-dark" x-arrow=""></div>{{new Intl.NumberFormat("en-GB", {maximumFractionDigits: 0}).format(signatures)}}</div>
+                        <div id="label" class="bg-dark text-light rounded px-2 ml-2" role="tooltip"><div class="bg-dark" x-arrow></div>{{new Intl.NumberFormat("en-GB", {maximumFractionDigits: 0}).format(signatures)}}</div>
                         <div id="fill" class="rounded-bottom" v-bind:style="{height: fillHeight}" style="width: 100%; background-color: #008800; border-top: 1px solid #006700"></div>
                     </div>
                 </div>
@@ -105,7 +105,9 @@
                             text: 'Signatures'
                         }
                     },
-                    series: [{}]
+                    series: [{
+                        name: 'Signatures'
+                    }]
                 });
 
                 let popper = new Popper($('#fill'), $('#label'), {
