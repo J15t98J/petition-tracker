@@ -5,8 +5,8 @@
         </nav>
 
         <div class="m-4" style="display: flex; flex-flow: column nowrap">
-            <h1 class="display-4" style="font-size: 2.8rem">{{petition.title}} <small class="text-muted">#{{petition.id}}</small></h1>
-            <h2 class="text-muted" style="font-weight: 300">{{petition.author}} - {{$prettydate.format(petition.created.toDate())}}</h2>
+            <h1 class="display-4" style="font-size: 2.8rem">{{petition.title}} <small class="text-muted">#{{$route.path.substr(1)}}</small></h1>
+            <h2 v-if="petition.created" class="text-muted" style="font-weight: 300">{{petition.author}} - {{$prettydate.format(petition.created.toDate())}}</h2>
 
             <h4>
                 <span class="badge badge-warning" v-if="petition.signatures >= 10000 && !petition.debated">Awaiting debate</span>
@@ -23,10 +23,17 @@
                     </div>
                 </div>
 
-                <div class="col-9" id="graph" style="height: 600px">
-                    I am a graph
-                </div>
+                <div class="col-9" id="graph" style="height: 600px"></div>
             </div>
+        </div>
+
+        <div id="footer" class="d-inline-flex flex-row align-items-center fixed-bottom display-4 m-4">
+            <i class="material-icons mr-2" style="font-size: 62px">sync_disabled</i>
+            <div>
+                <div style="font-size: 2rem"> No need to refresh</div>
+                <div class="text-muted" style="font-size: 1.3rem">The page updates automatically every five minutes</div>
+            </div>
+            <i v-if="congested" class="material-icons ml-auto" style="font-size: 62px; color: #FB8C00" data-toggle="tooltip" data-placement="left" title="High traffic volumes on the parliament website are making it difficult to fetch data">warning</i>
         </div>
     </div>
 </template>
@@ -55,14 +62,22 @@
                     signatures: null
                 },
                 snapshots: [],
-                signatures: 0
+                signatures: 0,
+                congested: false
             }
         },
         watch: {
             id: {
                 immediate: true,
                 handler(id) {
-                    this.$bind('petition', db.collection('petitions').doc(id));
+                    this.$bind('petition', db.collection('petitions').doc(id))
+                        .then(() => {
+                            // if the petition doesn't exist, switch to the 404 page
+                            if(this.$data.petition.created === undefined && this.$props.id != 'notfound') {
+                                this.$props.id = 'notfound';
+                            }
+                            return true;
+                        });
                     this.$bind('snapshots', db.collection('petitions').doc(id).collection('snapshots'));
                 }
             },
@@ -78,12 +93,16 @@
         },
         computed: {
             fillHeight: function() {
-                return (300 * this.signatures/1000000) + "px";
+                return (300 * this.signatures/10000) + "px";
             }
         },
         updated() {
             // nasty hack for only doing it once on load (since mounted() doesn't seem to work for this use case)
             if(chart == null) {
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                });
+
                 chart = Highcharts.chart('graph', {
                     chart: {
                         type: 'spline'
@@ -103,12 +122,45 @@
                     yAxis: {
                         title: {
                             text: 'Signatures'
-                        }
+                        },
+                        id: 'y'
                     },
-                    series: [{
-                        name: 'Signatures'
-                    }]
+                    series: [
+                        {
+                            name: 'Signatures',
+                            color: '#008800'
+                        },
+                        {
+                            visible: false,
+                            color: '#008800',
+                            marker: {
+                                enabled: false
+                            },
+                            data: [3000, 3600, 3800, 3917, 3980, 4000, 3980, 3917, 3800, 3600, 3000, null, null, null, null, 3000, 3600, 3800, 3917, 3980, 4000, 3980, 3917, 3800, 3600, 3000]
+                        },
+                        {
+                            visible: false,
+                            color: '#008800',
+                            marker: {
+                                enabled: false
+                            },
+                            data: [3000, 2400, 2200, 2083, 2020, 2000, 2020, 2083, 2200, 2400, 3000, null, null, null, null, 3000, 2400, 2200, 2083, 2020, 2000, 2020, 2083, 2200, 2400, 3000]
+                        },
+                        {
+                            visible: false,
+                            color: '#008800',
+                            marker: {
+                              enabled: false
+                            },
+                            data: [0, 241, 460, 684, 841, 1006, 1140, 1260, 1361, 1440, 1500, 1540, 1560, 1540, 1500, 1440, 1361, 1260, 1140, 1006, 841, 684, 460, 241, 0]
+                        }
+                    ]
                 });
+
+                if(!this.$data.petition || this.$props.id == 'notfound') {
+                    chart.series.forEach(s => s.setVisible(true));
+                    chart.get('y').setExtremes(null, 4000);
+                }
 
                 let popper = new Popper($('#fill'), $('#label'), {
                     placement: 'right-start',

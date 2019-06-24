@@ -42,7 +42,7 @@ exports.snapshotPetitions = functions.pubsub.schedule('every 5 minutes synchroni
         db.collection('petitions').where("state", "==", "open").get()
           .then(docs => docs.forEach(petition => {
             fetch(`https://petition.parliament.uk/petitions/${petition.id}.json`)
-                .then(response => response.json())
+                .then(response => response.json()) // TODO: log 5xx response codes to show connection warning on client
                 .then(json => {
                     petition.collection('snapshots').doc(new Date().getTime().toString()).set({
                         signatures: json.data.attributes.signature_count

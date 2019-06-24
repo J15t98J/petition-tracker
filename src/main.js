@@ -24,7 +24,6 @@ Vue.prototype.$prettydate = prettydate;
 import App from '@/App.vue';
 import PetitionCards from '@/pages/PetitionCards.vue';
 import PetitionDetails from "@/pages/PetitionDetails";
-import NotFound from "@/pages/NotFound";
 
 
 Vue.config.productionTip = false;
@@ -33,7 +32,7 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         {
-            path: '/:id(\\d+)',
+            path: '/:id',
             component: PetitionDetails,
             props: true
         },
@@ -42,8 +41,9 @@ const router = new VueRouter({
             component: PetitionCards
         },
         {
-            path: '*',
-            component: NotFound
+            path: '**',
+            component: PetitionDetails,
+            props: {id: 'notfound'}
         }
     ]
 });
