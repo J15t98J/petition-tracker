@@ -1,29 +1,4 @@
-# petition-tracker
+<p align="center"><img src="https://petitions.tylerjon.es/logo.png" align="center" /></p>
 
-## Project setup
-```
-npm install
-```
+Originally inspired by [Brexit Petitions Count](https://brexit-petitions-count.now.sh/) during the swell of signatures for the [Revoke Article 50 petition](https://petition.parliament.uk/petitions/241584), Petition Tracker seeks to provide insight into how UK Parliament Petitions perform during their six-month run. Tracked open petitions are crawled via Firebase every five minutes for analysis by the Single-Page Application at [petitions.tylerjon.es](https://petitions.tylerjon.es).
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
