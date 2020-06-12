@@ -29,7 +29,7 @@
                         <span class="badge badge-warning" v-if="petition.attributes.government_response == null && petition.attributes.response_threshold_reached_at != null">Awaiting response</span>
                         <span class="badge badge-info"    v-if="petition.attributes.government_response != null">Responded</span>
                     </div>
-                    <br v-if="petition.attributes.debate_threshold_reached_at != null" />
+                    <br v-if="petition.attributes.response_threshold_reached_at != null" />
 
                     <div style="text-align: justify">{{petition.attributes.background}}</div>
                 </div></a>
