@@ -25,30 +25,15 @@ import App from '@/App.vue';
 import PetitionCards from '@/pages/PetitionCards.vue';
 import PetitionDetails from "@/pages/PetitionDetails";
 
-
 Vue.config.productionTip = false;
 
 const router = new VueRouter({
-    mode: 'history',
-    routes: [
-        {
-            path: '/:id',
-            component: PetitionDetails,
-            props: true
-        },
-        {
-            path: '/',
-            component: PetitionCards
-        },
-        {
-            path: '**',
-            component: PetitionDetails,
-            props: {id: 'notfound'}
-        }
-    ]
+  mode : 'history',
+  routes : [
+    {path : '/:id', component : PetitionDetails, props : true},
+    {path : '/', component : PetitionCards},
+    {path : '**', component : PetitionDetails, props : {id : 'notfound'}}
+  ]
 });
 
-new Vue({
-    render: h => h(App),
-    router: router
-}).$mount('#app');
+new Vue({render : h => h(App), router : router}).$mount('#app');
