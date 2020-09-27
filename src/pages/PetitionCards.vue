@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar navbar-dark flex-nowrap sticky-top px-4 shadow-sm" style="background-color: #080; min-height: 59px">
+        <nav class="navbar navbar-dark flex-nowrap sticky-top px-4 shadow-sm">
             <a class="navbar-brand" href="./index.html"><i class="material-icons" style="font-size: 2rem; vertical-align: top">trending_up</i> Petition Tracker</a>
 
             <form class="form-inline" id="search-box" action="javascript:$('#search-box input').blur()" style="flex-grow: 1; justify-content: flex-end">
@@ -93,7 +93,7 @@
 
 <style scoped>
     .card-footer span i {
-        margin-right: .1em;
+        margin-right: .15em;
     }
 
     div > .badge {
